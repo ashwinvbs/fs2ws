@@ -40,7 +40,7 @@ class Extension {
     win.change_workspace_by_index(previous, 1);
     let fullScreenWorkspace = global.workspace_manager.get_active_workspace();
     global.workspace_manager.get_workspace_by_index(previous).activate(global.get_current_time());
-    global.workspaceManager.remove_workspace(fullScreenWorkspace);
+    global.workspaceManager.remove_workspace(fullScreenWorkspace, 0);
   }
 
   enable() {
