@@ -1,0 +1,11 @@
+{
+    "name": "Fullscreen To Workspace",
+    "description": "On primary display, move window to a new workspace when you maximize or make it fullscreen.",
+    "shell-version": [
+        "40",
+        "41"
+    ],
+    "uuid": "fs2ws@ashwinvbs.com",
+    "url": "",
+    "version": 1
+}
