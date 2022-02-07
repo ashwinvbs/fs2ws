@@ -14,10 +14,7 @@ class Extension {
     this._previousWorkspace = {};
   }
 
-  maximize(act) {
-    const win = act.meta_window;
-    if (win.window_type !== Meta.WindowType.NORMAL)
-      return;
+  maximize(win) {
     // If the current workspace doesn't have any other windows make it maximized here.
     if (global.workspace_manager.get_active_workspace().list_windows().length == 1)
       return;
@@ -29,10 +26,7 @@ class Extension {
     global.workspace_manager.get_workspace_by_index(lastworkspace).activate(global.get_current_time());
   }
 
-  unmaximize(act) {
-    const win = act.meta_window;
-    if (win.window_type !== Meta.WindowType.NORMAL)
-      return;
+  unmaximize(win) {
     let previous = this._previousWorkspace[win.toString()];
     if (previous == null || previous == undefined)
       return;
@@ -50,14 +44,18 @@ class Extension {
       let dis = global.get_display();
       if (dis.get_primary_monitor() != dis.get_monitor_index_for_rect(to)) return;
 
+      let win = act.meta_window;
+      if (win.window_type !== Meta.WindowType.NORMAL)
+        return;
+
       switch (change) {
         case Meta.SizeChange.MAXIMIZE:
         case Meta.SizeChange.FULLSCREEN:
-          this.maximize(act);
+          this.maximize(win);
           break;
         case Meta.SizeChange.UNMAXIMIZE:
         case Meta.SizeChange.UNFULLSCREEN:
-          this.unmaximize(act);
+          this.unmaximize(win);
           break;
         default:
           break;
@@ -65,7 +63,11 @@ class Extension {
     }));
 
     this._handles.push(global.window_manager.connect('destroy', (_, act, change) => {
-      this.unmaximize(act)
+      let win = act.meta_window;
+      if (win.window_type !== Meta.WindowType.NORMAL)
+        return;
+
+      this.unmaximize(win)
     }));
   }
 
