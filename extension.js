@@ -71,6 +71,8 @@ class Extension {
   maximize(win) {
     this.log_with_tag(`maximizing window with title ${win.get_title()}`);
 
+    if (this.get_windows_on_workspace(win.get_workspace()).length == 1) return;
+
     let current_index = global.workspace_manager.get_active_workspace_index();
     let target_workspace = global.workspace_manager.append_new_workspace(false, global.get_current_time());
     global.workspace_manager.reorder_workspace(target_workspace, current_index);
